@@ -54,16 +54,6 @@
 
 struct imagedata
 { int x,y; } img_orig_struct[76800];
-long long int aux[10000000]={0};
-int ctr_in_aux(unsigned long long int ctr,unsigned long long int ctr_aux)
-  {
-	   long long int i=0;
-	   for(i=0;i<=ctr_aux;i++)
-	   if (aux[i]==ctr) return 1;
-	   
-	   return 0;
-   } //function to check ctr validity
-   
 //This function creates a PCL visualizer, sets the point cloud to view and returns a pointer
 
 boost::shared_ptr<pcl::visualization::PCLVisualizer> normalsVis (
@@ -183,7 +173,7 @@ int main( int argc, char** argv )
   
   double px, py, pz;
   uchar pr, pg, pb;
-  unsigned long long int ctr=1,ctr_aux=0;
+  int ctr=1;
   for (int i = 0; i < img_rgb.rows; i++)
   {
     uchar* rgb_ptr = img_rgb.ptr<uchar>(i);
@@ -200,8 +190,9 @@ int main( int argc, char** argv )
       uchar d = disp_ptr[j];
       img_orig_struct[ctr].x=j;
       img_orig_struct[ctr].y=i;
+      ctr++;
       //
-      if ( d == 0 ) {  aux[ctr_aux]=ctr; ctr_aux++; continue; }//Discard bad pixels
+      if ( d == 0 ) continue; //Discard bad pixels
       double pw = -1.0 * static_cast<double>(d) * Q32 + Q33; 
       px = static_cast<double>(j) + Q03;
       py = static_cast<double>(i) + Q13;
@@ -232,8 +223,6 @@ int main( int argc, char** argv )
               static_cast<uint32_t>(pg) << 8 | static_cast<uint32_t>(pb));
       point.rgb = *reinterpret_cast<float*>(&rgb);
       point_cloud_ptr->points.push_back (point);
-      //
-      ctr++;
     }
   }
   point_cloud_ptr->width = (int) point_cloud_ptr->points.size();
@@ -255,7 +244,7 @@ int main( int argc, char** argv )
   pcl::io::savePCDFileASCII ("test_pcd_normals.pcd",cloud_that_we_need_2) ;
 
 //Start of Code
-cv::Mat img_nrmls=cv::Mat::zeros(img_rgb.rows,img_rgb.cols, CV_8UC3);
+cv::Mat img_nrmls(img_rgb.rows,img_rgb.cols, CV_8UC3);
 pcl::PointNormal a;
 //pcl::PointCloud<pcl::Normal>::iterator b1;
 pcl::PointCloud<pcl::PointXYZRGB>::iterator b2;
@@ -277,12 +266,11 @@ cv::Mat_<cv::Vec3b>::iterator it= img_nrmls.begin<cv::Vec3b>(),it_end=img_nrmls.
        int x,y;
        while( b2!=point_cloud_ptr->end())
          {     
-			 if (ctr_in_aux(ctr,ctr_aux)) { ctr++;continue;}
-			 y=img_orig_struct[ctr].x;
-			 x=img_orig_struct[ctr].y;   
+    		 x=img_orig_struct[ctr].x;
+			 y=img_orig_struct[ctr].y;   
 			    img_nrmls.at<cv::Vec3b>(x,y)[0]=b2->b;
-			    img_nrmls.at<cv::Vec3b>(x,y)[1]=b2->g;
-                img_nrmls.at<cv::Vec3b>(x,y)[2]=b2->r;			    
+			    img_nrmls.at<cv::Vec3b>(x,y)[0]=b2->g;
+                img_nrmls.at<cv::Vec3b>(x,y)[0]=b2->r;			    
 			    b2++;
 			    ctr++;
 			}
@@ -318,7 +306,7 @@ while(b1!=cloud_normals1->end() && it!= it_end)
  
  
 cv::namedWindow( "Gray image", CV_WINDOW_AUTOSIZE );
- //bool imwrite(const string& filename, InputArray img, const vector<int>& params=vector<int>() )¶
+ //bool imwrite(const string& filename, InputArray img, const vector<int>& params=vector<int>() )Â¶
  cv::imwrite( "img_nrmls.jpg",img_nrmls);
  cv::imshow("Gray image", img_nrmls);
  cvWaitKey(0);
