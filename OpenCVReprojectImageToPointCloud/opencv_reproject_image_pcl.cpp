@@ -1,8 +1,8 @@
 /**
 *       @file opencv_reproject_image_pcl.cpp
-*       @brief Reproject an image to Point Cloud using OpenCV and PCL.
-*       @author Martin Peris (http://www.martinperis.com)
-*       @date 06/01/2012
+*       @brief Find Planes in an Image, using its disparity image
+*       @author Giridhur<giridhursriram@gmail.com> ,Giridar<> ,Prasanna S <>
+*       @date 04/04/2014
 */
 
 /*
@@ -11,9 +11,10 @@
         rgb-image (left image of stereo rig) a disparity-image (obtained with 
         some stereo matching algorithm) and the matrix Q (Generated at calibration 
         stage). It displays the 3D reconstruction of the scene using PCL.
-        Copyright (c) 2012 Martin Peris (http://www.martinperis.com).
-        All right reserved.
-        
+        It displays the planes in the scene, using segmentation algorithms.
+		
+        Our sincere thanks to Martin Peris, for giving us the base file to build upon.
+		
         This application is free software; you can redistribute it and/or
         modify it under the terms of the GNU Lesser General Public
         License as published by the Free Software Foundation; either
