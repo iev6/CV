@@ -1,8 +1,8 @@
 /**
 *       @file opencv_reproject_image_pcl.cpp
-*       @brief Reproject an image to Point Cloud using OpenCV and PCL.
-*       @author Martin Peris (http://www.martinperis.com)
-*       @date 06/01/2012
+*       @brief Identify Planes using Kinect Data Input using OpenCV and PCL.
+*       @author Giridhur,Giridar
+*       @date 11/04/2014
 */
 
 /*
@@ -11,8 +11,7 @@
         rgb-image (left image of stereo rig) a disparity-image (obtained with 
         some stereo matching algorithm) and the matrix Q (Generated at calibration 
         stage). It displays the 3D reconstruction of the scene using PCL.
-        Copyright (c) 2012 Martin Peris (http://www.martinperis.com).
-        All right reserved.
+        and calculates planes and orientation in the image
         
         This application is free software; you can redistribute it and/or
         modify it under the terms of the GNU Lesser General Public
@@ -198,8 +197,6 @@ int main( int argc, char** argv )
 #ifdef CUSTOM_REPROJECT
       //
       uchar d = disp_ptr[j];
-      img_orig_struct[ctr].x=j;
-      img_orig_struct[ctr].y=i;
       //
       if ( d == 0 ) {  aux[ctr_aux]=ctr; ctr_aux++; continue; }//Discard bad pixels
       double pw = -1.0 * static_cast<double>(d) * Q32 + Q33; 
@@ -233,6 +230,9 @@ int main( int argc, char** argv )
       point.rgb = *reinterpret_cast<float*>(&rgb);
       point_cloud_ptr->points.push_back (point);
       //
+      img_orig_struct[ctr].x=j;
+      img_orig_struct[ctr].y=i;
+      
       ctr++;
     }
   }
@@ -254,12 +254,12 @@ int main( int argc, char** argv )
   pcl::PointCloud<pcl::Normal> cloud_that_we_need_2 = *cloud_normals1;
   pcl::io::savePCDFileASCII ("test_pcd_normals.pcd",cloud_that_we_need_2) ;
 
-//Start of Code
+//Start of trial Code
 cv::Mat img_nrmls=cv::Mat::zeros(img_rgb.rows,img_rgb.cols, CV_8UC3);
 pcl::PointNormal a;
-//pcl::PointCloud<pcl::Normal>::iterator b1;
+pcl::PointCloud<pcl::Normal>::iterator b1;
 pcl::PointCloud<pcl::PointXYZRGB>::iterator b2;
-//b1 = cloud_normals1->begin();
+b1 = cloud_normals1->begin();
 b2=point_cloud_ptr->begin();
 uint16_t i;
 
@@ -275,50 +275,57 @@ cv::Mat_<cv::Vec3b>::iterator it= img_nrmls.begin<cv::Vec3b>(),it_end=img_nrmls.
        */
        ctr=0; 
        int x,y;
-       while( b2!=point_cloud_ptr->end())
+     /*
+        while( b2!=point_cloud_ptr->end())
          {     
-			 if (ctr_in_aux(ctr,ctr_aux)) { ctr++;continue;}
-			 y=img_orig_struct[ctr].x;
-			 x=img_orig_struct[ctr].y;   
+			// if (ctr_in_aux(ctr,ctr_aux)) { ctr++;continue;}
+			// else 
+			 {
+				 y=img_orig_struct[ctr].x;
+			  x=img_orig_struct[ctr].y;   
 			    img_nrmls.at<cv::Vec3b>(x,y)[0]=b2->b;
 			    img_nrmls.at<cv::Vec3b>(x,y)[1]=b2->g;
                 img_nrmls.at<cv::Vec3b>(x,y)[2]=b2->r;			    
-			    b2++;
 			    ctr++;
+			  }
+			    b2++;
+			  
 			}
-/*
-while(b1!=cloud_normals1->end() && it!= it_end)
+			
+			*/
+//Visualizing normals
+while(b1!=cloud_normals1->end())
  {
 	 
-	 if (!pcl::isFinite<pcl::Normal>( *b1 ))
+	 if (pcl::isFinite<pcl::Normal>( *b1 ))
                 {
 					
 				
-				(*it)[0] = (int)(128*(1+(b1->normal_x)));
-                (*it)[1] = (int)(128*(1+(b1->normal_y)));
-                (*it)[2] = (int)(128*(1+(b1->normal_z)));
+			 	y=img_orig_struct[ctr].x;
+			 	x=img_orig_struct[ctr].y;   
+
+				img_nrmls.at<cv::Vec3b>(x,y)=cv::Vec3b((int)(128*(1+(b1->normal_x))),(int)(128*(1+(b1->normal_y))),(int)(128*(1+(b1->normal_z))));
 			     
-			    (*it)[0] = 25;
-                (*it)[1] = 255;
-                (*it)[2] = 255;
-			     
+			   			     
 			     }
                 	
                 	else
                 	{
-				(*it)[0] = 255;
-                (*it)[1] = 255;
-                (*it)[2] = 255;
+				
+					 y=img_orig_struct[ctr].x;
+			 		 x=img_orig_struct[ctr].y;   
+			 		 img_nrmls.at<cv::Vec3b>(x,y) = cv::Vec3b( 255,255,255);
 			         }
-     it++; b1++;
+      b1++;
+      ctr++;
  }
  
- */
+ 
  
  
  
 cv::namedWindow( "Gray image", CV_WINDOW_AUTOSIZE );
- //bool imwrite(const string& filename, InputArray img, const vector<int>& params=vector<int>() )¶
+ //bool imwrite(const string& filename, InputArray img, const vector<int>& params=vector<int>() )Â¶
  cv::imwrite( "img_nrmls.jpg",img_nrmls);
  cv::imshow("Gray image", img_nrmls);
  cvWaitKey(0);

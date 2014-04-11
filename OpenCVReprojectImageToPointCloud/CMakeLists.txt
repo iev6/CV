@@ -10,5 +10,7 @@ add_definitions(${PCL_DEFINITIONS})
 
 find_package( OpenCV REQUIRED )
 add_executable( OpenCVReprojectImageToPointCloud opencv_reproject_image_pcl.cpp )
+add_executable( OpenCVSmooth opencvsmooth.cpp)
+target_link_libraries ( OpenCVSmooth ${PCL_LIBRARIES})
 target_link_libraries( OpenCVReprojectImageToPointCloud ${OpenCV_LIBS} ${PCL_LIBRARIES})
 
