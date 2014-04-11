@@ -1,8 +1,14 @@
 /**
 *       @file opencv_reproject_image_pcl.cpp
+<<<<<<< HEAD
 *       @brief Identify Planes using Kinect Data Input using OpenCV and PCL.
 *       @author Giridhur,Giridar
 *       @date 11/04/2014
+=======
+*       @brief Find Planes in an Image, using its disparity image
+*       @author Giridhur<giridhursriram@gmail.com> ,Giridar<> ,Prasanna S <>
+*       @date 04/04/2014
+>>>>>>> 1114456d62ff0e0651eddcdeaea15ed27227194d
 */
 
 /*
@@ -11,8 +17,15 @@
         rgb-image (left image of stereo rig) a disparity-image (obtained with 
         some stereo matching algorithm) and the matrix Q (Generated at calibration 
         stage). It displays the 3D reconstruction of the scene using PCL.
+<<<<<<< HEAD
         and calculates planes and orientation in the image
         
+=======
+        It displays the planes in the scene, using segmentation algorithms.
+		
+        Our sincere thanks to Martin Peris, for giving us the base file to build upon.
+		
+>>>>>>> 1114456d62ff0e0651eddcdeaea15ed27227194d
         This application is free software; you can redistribute it and/or
         modify it under the terms of the GNU Lesser General Public
         License as published by the Free Software Foundation; either
