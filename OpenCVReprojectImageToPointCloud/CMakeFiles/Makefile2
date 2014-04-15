@@ -91,6 +91,41 @@ clean: CMakeFiles/Trial.dir/clean
 .PHONY : clean
 
 #=============================================================================
+# Target rules for target CMakeFiles/OpenCVSmooth.dir
+
+# All Build rule for target.
+CMakeFiles/OpenCVSmooth.dir/all:
+	$(MAKE) -f CMakeFiles/OpenCVSmooth.dir/build.make CMakeFiles/OpenCVSmooth.dir/depend
+	$(MAKE) -f CMakeFiles/OpenCVSmooth.dir/build.make CMakeFiles/OpenCVSmooth.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/giridhur/Desktop/OpenCVReprojectImageToPointCloud/CMakeFiles  2
+	@echo "Built target OpenCVSmooth"
+.PHONY : CMakeFiles/OpenCVSmooth.dir/all
+
+# Include target in all.
+all: CMakeFiles/OpenCVSmooth.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/OpenCVSmooth.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/giridhur/Desktop/OpenCVReprojectImageToPointCloud/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/OpenCVSmooth.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/giridhur/Desktop/OpenCVReprojectImageToPointCloud/CMakeFiles 0
+.PHONY : CMakeFiles/OpenCVSmooth.dir/rule
+
+# Convenience name for target.
+OpenCVSmooth: CMakeFiles/OpenCVSmooth.dir/rule
+.PHONY : OpenCVSmooth
+
+# clean rule for target.
+CMakeFiles/OpenCVSmooth.dir/clean:
+	$(MAKE) -f CMakeFiles/OpenCVSmooth.dir/build.make CMakeFiles/OpenCVSmooth.dir/clean
+.PHONY : CMakeFiles/OpenCVSmooth.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/OpenCVSmooth.dir/clean
+.PHONY : clean
+
+#=============================================================================
 # Special targets to cleanup operation of make.
 
 # Special rule to run CMake to check the build system integrity.

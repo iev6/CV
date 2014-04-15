@@ -114,8 +114,26 @@ Trial/fast:
 	$(MAKE) -f CMakeFiles/Trial.dir/build.make CMakeFiles/Trial.dir/build
 .PHONY : Trial/fast
 
+<<<<<<< HEAD
 trial.o: trial.cpp.o
 .PHONY : trial.o
+=======
+#=============================================================================
+# Target rules for targets named OpenCVSmooth
+
+# Build rule for target.
+OpenCVSmooth: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 OpenCVSmooth
+.PHONY : OpenCVSmooth
+
+# fast build rule for target.
+OpenCVSmooth/fast:
+	$(MAKE) -f CMakeFiles/OpenCVSmooth.dir/build.make CMakeFiles/OpenCVSmooth.dir/build
+.PHONY : OpenCVSmooth/fast
+
+opencv_reproject_image_pcl.o: opencv_reproject_image_pcl.cpp.o
+.PHONY : opencv_reproject_image_pcl.o
+>>>>>>> 331f6678eb855c9c55054cfd4198e4b709b40601
 
 # target to build an object file
 trial.cpp.o:
@@ -138,18 +156,55 @@ trial.cpp.s:
 	$(MAKE) -f CMakeFiles/Trial.dir/build.make CMakeFiles/Trial.dir/trial.cpp.s
 .PHONY : trial.cpp.s
 
+opencvsmooth.o: opencvsmooth.cpp.o
+.PHONY : opencvsmooth.o
+
+# target to build an object file
+opencvsmooth.cpp.o:
+	$(MAKE) -f CMakeFiles/OpenCVSmooth.dir/build.make CMakeFiles/OpenCVSmooth.dir/opencvsmooth.cpp.o
+.PHONY : opencvsmooth.cpp.o
+
+opencvsmooth.i: opencvsmooth.cpp.i
+.PHONY : opencvsmooth.i
+
+# target to preprocess a source file
+opencvsmooth.cpp.i:
+	$(MAKE) -f CMakeFiles/OpenCVSmooth.dir/build.make CMakeFiles/OpenCVSmooth.dir/opencvsmooth.cpp.i
+.PHONY : opencvsmooth.cpp.i
+
+opencvsmooth.s: opencvsmooth.cpp.s
+.PHONY : opencvsmooth.s
+
+# target to generate assembly for a file
+opencvsmooth.cpp.s:
+	$(MAKE) -f CMakeFiles/OpenCVSmooth.dir/build.make CMakeFiles/OpenCVSmooth.dir/opencvsmooth.cpp.s
+.PHONY : opencvsmooth.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
+<<<<<<< HEAD
 	@echo "... Trial"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... trial.o"
 	@echo "... trial.i"
 	@echo "... trial.s"
+=======
+	@echo "... OpenCVReprojectImageToPointCloud"
+	@echo "... OpenCVSmooth"
+	@echo "... edit_cache"
+	@echo "... rebuild_cache"
+	@echo "... opencv_reproject_image_pcl.o"
+	@echo "... opencv_reproject_image_pcl.i"
+	@echo "... opencv_reproject_image_pcl.s"
+	@echo "... opencvsmooth.o"
+	@echo "... opencvsmooth.i"
+	@echo "... opencvsmooth.s"
+>>>>>>> 331f6678eb855c9c55054cfd4198e4b709b40601
 .PHONY : help
 
 

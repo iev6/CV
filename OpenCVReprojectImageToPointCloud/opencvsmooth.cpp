@@ -49,8 +49,13 @@ int main (int argc, char** argv)
 
   // Init object (second point type is for the normals, even if unused)
   pcl::MovingLeastSquares<pcl::PointXYZ, pcl::PointNormal> mls;
+<<<<<<< HEAD
   pcl::PointCloud<pcl::Normal>::Ptr mls_ptr(&mls_points);
            
+=======
+  pcl::PointCloud<pcl::Normal>::Ptr mls_ptr (new pcl::PointCloud<pcl::Normal>);
+           *mls_ptr=mls_points;
+>>>>>>> 331f6678eb855c9c55054cfd4198e4b709b40601
    //Tag
   mls.setComputeNormals (true);
   

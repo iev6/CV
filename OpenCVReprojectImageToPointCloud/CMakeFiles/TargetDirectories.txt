@@ -1,1 +1,6 @@
+<<<<<<< HEAD
 /home/giridhur/Desktop/OpenCVReprojectImageToPointCloud/CMakeFiles/Trial.dir
+=======
+/home/giridhur/Desktop/OpenCVReprojectImageToPointCloud/CMakeFiles/OpenCVReprojectImageToPointCloud.dir
+/home/giridhur/Desktop/OpenCVReprojectImageToPointCloud/CMakeFiles/OpenCVSmooth.dir
+>>>>>>> 331f6678eb855c9c55054cfd4198e4b709b40601
