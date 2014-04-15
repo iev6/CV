@@ -27,7 +27,8 @@
         License along with this application; if not, write to the Free Software
         Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
-
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/highgui/highgui.hpp>
 #include <cv.h>
 #include <highgui.h>
 #include <iostream>
@@ -52,15 +53,15 @@
 ***/
 
 struct imagedata
-{ int x,y; } img_orig_struct[76800];
+{ int x,y; } img_orig_struct[307200];
 long long int aux[10000000]={0};
 int ctr_in_aux(unsigned long long int ctr,unsigned long long int ctr_aux)
   {
-	   long long int i=0;
-	   for(i=0;i<=ctr_aux;i++)
-	   if (aux[i]==ctr) return 1;
-	   
-	   return 0;
+       long long int i=0;
+       for(i=0;i<=ctr_aux;i++)
+       if (aux[i]==ctr) return 1;
+       
+       return 0;
    } //function to check ctr validity
    
 //This function creates a PCL visualizer, sets the point cloud to view and returns a pointer
@@ -161,7 +162,7 @@ int main( int argc, char** argv )
   //Show both images (for debug purposes)
   cv::namedWindow("rgb-image");
   cv::namedWindow("disparity-image");
-  cv::imshow("rbg-image", img_rgb);
+  cv::imshow("rgb-image", img_rgb);
   cv::imshow("disparity-image", img_disparity);
   std::cout << "Press a key to continue..." << std::endl;
   cv::waitKey(0);
@@ -169,7 +170,8 @@ int main( int argc, char** argv )
   cv::destroyWindow("disparity-image");
   
 #ifndef CUSTOM_REPROJECT
-  //Create matrix that will contain 3D corrdinates of each pixel
+ std::cout << "Create matrix that will contain 3D corrdinates of each pixel" << std::endl; 
+//Create matrix that will contain 3D corrdinates of each pixel
   cv::Mat recons3D(img_disparity.size(), CV_32FC3);
   
   //Reproject image to 3D
@@ -242,8 +244,8 @@ int main( int argc, char** argv )
   char as;
   std::cin>>as;
   std::cout<<endl;
-     pcl::PointCloud<pcl::PointXYZRGB> cloud_that_we_need = *point_cloud_ptr;
-     pcl::io::savePCDFileASCII ("test_pcd.pcd",cloud_that_we_need) ;
+  pcl::PointCloud<pcl::PointXYZRGB> cloud_that_we_need = *point_cloud_ptr;
+    pcl::io::savePCDFileASCII ("test_pcd.pcd",cloud_that_we_need) ;
      pcl::NormalEstimation<pcl::PointXYZRGB, pcl::Normal> ne;
   ne.setInputCloud (point_cloud_ptr);
   pcl::search::KdTree<pcl::PointXYZRGB>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZRGB> ());
@@ -278,44 +280,44 @@ cv::Mat_<cv::Vec3b>::iterator it= img_nrmls.begin<cv::Vec3b>(),it_end=img_nrmls.
      /*
         while( b2!=point_cloud_ptr->end())
          {     
-			// if (ctr_in_aux(ctr,ctr_aux)) { ctr++;continue;}
-			// else 
-			 {
-				 y=img_orig_struct[ctr].x;
-			  x=img_orig_struct[ctr].y;   
-			    img_nrmls.at<cv::Vec3b>(x,y)[0]=b2->b;
-			    img_nrmls.at<cv::Vec3b>(x,y)[1]=b2->g;
-                img_nrmls.at<cv::Vec3b>(x,y)[2]=b2->r;			    
-			    ctr++;
-			  }
-			    b2++;
-			  
-			}
-			
-			*/
+            // if (ctr_in_aux(ctr,ctr_aux)) { ctr++;continue;}
+            // else 
+             {
+                 y=img_orig_struct[ctr].x;
+              x=img_orig_struct[ctr].y;   
+                img_nrmls.at<cv::Vec3b>(x,y)[0]=b2->b;
+                img_nrmls.at<cv::Vec3b>(x,y)[1]=b2->g;
+                img_nrmls.at<cv::Vec3b>(x,y)[2]=b2->r;                
+                ctr++;
+              }
+                b2++;
+              
+            }
+            
+            */
 //Visualizing normals
 while(b1!=cloud_normals1->end())
  {
-	 
-	 if (pcl::isFinite<pcl::Normal>( *b1 ))
+     
+     if (pcl::isFinite<pcl::Normal>( *b1 ))
                 {
-					
-				
-			 	y=img_orig_struct[ctr].x;
-			 	x=img_orig_struct[ctr].y;   
+                    
+                
+                 y=img_orig_struct[ctr].x;
+                 x=img_orig_struct[ctr].y;   
 
-				img_nrmls.at<cv::Vec3b>(x,y)=cv::Vec3b((int)(128*(1+(b1->normal_x))),(int)(128*(1+(b1->normal_y))),(int)(128*(1+(b1->normal_z))));
-			     
-			   			     
-			     }
-                	
-                	else
-                	{
-				
-					 y=img_orig_struct[ctr].x;
-			 		 x=img_orig_struct[ctr].y;   
-			 		 img_nrmls.at<cv::Vec3b>(x,y) = cv::Vec3b( 255,255,255);
-			         }
+                img_nrmls.at<cv::Vec3b>(x,y)=cv::Vec3b((int)(128*(1+(b1->normal_x))),(int)(128*(1+(b1->normal_y))),(int)(128*(1+(b1->normal_z))));
+                 
+                                
+                 }
+                    
+                    else
+                    {
+                
+                     y=img_orig_struct[ctr].x;
+                      x=img_orig_struct[ctr].y;   
+                      img_nrmls.at<cv::Vec3b>(x,y) = cv::Vec3b( 255,255,255);
+                     }
       b1++;
       ctr++;
  }
@@ -332,9 +334,153 @@ cv::namedWindow( "Gray image", CV_WINDOW_AUTOSIZE );
 //End of trial code
 // pcl::PointXYZRGB *point = point_cloud_ptr<pcl::PointXYZRGB>.at(0,0);
 // std::cout<<"argo fuck yourself";
+
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+//cv::Mat src = cv::imread("img_nrmls.jpg");
+cv::Mat src;
+src=img_nrmls;
+
+cv::imshow("src", src);
+
+// Create binary image from source image
+cv::Mat bw;
+cv::cvtColor(src, bw, CV_BGR2GRAY);
+cv::threshold(bw, bw, 40, 255, CV_THRESH_BINARY);
+cv::imshow("bw", bw);
+
+// Perform the distance transform algorithm
+cv::Mat dist;
+cv::distanceTransform(bw, dist, CV_DIST_L2, 3);
+
+// Normalize the distance image for range = {0.0, 1.0}
+// so we can visualize and threshold it
+cv::normalize(dist, dist, 0, 1., cv::NORM_MINMAX);
+cv::imshow("dist", dist);
+
+// Threshold to obtain the peaks
+// This will be the markers for the foreground objects
+cv::threshold(dist, dist, .5, 1., CV_THRESH_BINARY);
+cv::imshow("dist2", dist);
+
+// Create the CV_8U version of the distance image
+// It is needed for cv::findContours()
+cv::Mat dist_8u;
+dist.convertTo(dist_8u, CV_8U);
+
+// Find total markers
+std::vector<std::vector<cv::Point> > contours;
+cv::findContours(dist_8u, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
+int ncomp = contours.size();
+
+// Create the marker image for the watershed algorithm
+cv::Mat markers = cv::Mat::zeros(dist.size(), CV_32SC1);
+
+// Draw the foreground markers
+for (int i = 0; i < ncomp; i++)
+cv::drawContours(markers, contours, i, cv::Scalar::all(i+1), -1);
+
+// Draw the background marker
+cv::circle(markers, cv::Point(5,5), 3, CV_RGB(255,255,255), -1);
+cv::imshow("markers", markers*10000);
+
+// Perform the watershed algorithm
+cv::watershed(src, markers);
+
+// Generate random colors
+std::vector<cv::Vec3b> colors;
+for (int i = 0; i < ncomp; i++)
+{
+int b = cv::theRNG().uniform(0, 255);
+int g = cv::theRNG().uniform(0, 255);
+int r = cv::theRNG().uniform(0, 255);
+
+colors.push_back(cv::Vec3b((uchar)b, (uchar)g, (uchar)r));
+}
+
+// Create the result image
+cv::Mat dst = cv::Mat::zeros(markers.size(), CV_8UC3);
+
+// Fill labeled objects with random colors
+for (int i = 0; i < markers.rows; i++)
+{
+for (int j = 0; j < markers.cols; j++)
+{
+int index = markers.at<int>(i,j);
+if (index > 0 && index <= ncomp)
+dst.at<cv::Vec3b>(i,j) = colors[index-1];
+else
+dst.at<cv::Vec3b>(i,j) = cv::Vec3b(0,0,0);
+}
+}
+
+cv::imshow("dst", dst);
+//+++++++++++++++
+
+
+//&&&&&&&&
+cv::waitKey(0);
+
+//Start of Canny
+
+cv::blur( dst, dst, cv::Size(3,3) );
+//Contours
+int thresh = 5;
+int max_thresh = 255;
+cv::RNG rng(12345);
+  cv::Mat canny_output;
+  // cv::vector<cv::vector<cv::Point> > contours;  already used. contains the watershed points
+  cv::vector<cv::Vec4i> hierarchy;
+cv::cvtColor(dst,canny_output,CV_BGR2GRAY);
+  /// Detect edges using canny
+  cv::Canny( canny_output, canny_output, thresh, thresh*2, 3 );
+  /// Find contours
+  cv::findContours( canny_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0) );
+
+  /// Draw contours
+  cv::Mat drawing = cv::Mat::zeros( canny_output.size(), CV_8UC3 );
+ double  max=0;
+ int pos=0,i1;
+  for(  i1 = 0; i1< contours.size(); i1++ )
+     {
+if ( cv::contourArea(contours[i1]) >max) { max = cv::contourArea(contours[i1]) ; pos=i1; }
+       
+     }
+      cv::Scalar color = cv::Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
+
+cv::drawContours( drawing, contours, pos, color, 2, 8);
+float avg1=0,avg2=0,avg3=0;
+int j;
+/*
+for(j=0;j<contours[pos].size();j++)
+{ 
+avg1+= img_nrmls.at<cv::Vec3b>(contours[pos][j].y,contours[pos][j].x)[0];
+avg2+= img_nrmls.at<cv::Vec3b>(contours[pos][j].y,contours[pos][j].x)[1];
+avg3+= img_nrmls.at<cv::Vec3b>(contours[pos][j].y,contours[pos][j].x)[2];
+}
+avg1/=j;
+avg2/=j;
+avg3/=j;
+*/
+ // syntax for writing image file bool imwrite(const string& filename, InputArray img, const vector<int>& params=vector<int>() )¶
+ cv::imwrite( "img_nrmls_detect.jpg",drawing);
+ cv::imshow("Gray image", drawing);
+ //cv::imshow(" image", img_nrmls);
+ cvWaitKey(0);
+ 
+cout<<"The direction cosines of the largest plane are"<<avg1<<avg2<<avg3; 
+ 
+ 
+ 
+ 
+ 
+//End of trial code
+
+
+
+
   // cloud_normals1 holds our normals 
   //Create visualizer
-  boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
+//  boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
  //viewer = normalsVis(point_cloud_ptr, cloud_normals1);
   // 
   //Main loop
@@ -344,5 +490,13 @@ cv::namedWindow( "Gray image", CV_WINDOW_AUTOSIZE );
     boost::this_thread::sleep (boost::posix_time::microseconds (100000));
   }
   */
+
+
+
+
+
   return 0;
+
+
 }
+	

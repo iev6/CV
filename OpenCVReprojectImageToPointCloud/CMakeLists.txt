@@ -9,6 +9,11 @@ link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 
 find_package( OpenCV REQUIRED )
-add_executable( OpenCVReprojectImageToPointCloud opencv_reproject_image_pcl.cpp )
-target_link_libraries( OpenCVReprojectImageToPointCloud ${OpenCV_LIBS} ${PCL_LIBRARIES})
+#add_executable( OpenCVReprojectImageToPointCloud opencv_reproject_image_pcl.cpp )
+#add_executable( OpenCVSmooth opencvsmooth.cpp)
+add_executable( Trial trial.cpp)
+#Trial is the trial file with contours method implemented
+target_link_libraries( Trial ${OpenCV_LIBS} ${PCL_LIBRARIES})
+#target_link_libraries ( OpenCVSmooth ${PCL_LIBRARIES})
+#target_link_libraries( OpenCVReprojectImageToPointCloud ${OpenCV_LIBS} ${PCL_LIBRARIES})
 

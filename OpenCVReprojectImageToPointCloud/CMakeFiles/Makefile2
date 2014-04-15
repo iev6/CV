@@ -56,38 +56,38 @@ CMAKE_SOURCE_DIR = /home/giridhur/Desktop/OpenCVReprojectImageToPointCloud
 CMAKE_BINARY_DIR = /home/giridhur/Desktop/OpenCVReprojectImageToPointCloud
 
 #=============================================================================
-# Target rules for target CMakeFiles/OpenCVReprojectImageToPointCloud.dir
+# Target rules for target CMakeFiles/Trial.dir
 
 # All Build rule for target.
-CMakeFiles/OpenCVReprojectImageToPointCloud.dir/all:
-	$(MAKE) -f CMakeFiles/OpenCVReprojectImageToPointCloud.dir/build.make CMakeFiles/OpenCVReprojectImageToPointCloud.dir/depend
-	$(MAKE) -f CMakeFiles/OpenCVReprojectImageToPointCloud.dir/build.make CMakeFiles/OpenCVReprojectImageToPointCloud.dir/build
+CMakeFiles/Trial.dir/all:
+	$(MAKE) -f CMakeFiles/Trial.dir/build.make CMakeFiles/Trial.dir/depend
+	$(MAKE) -f CMakeFiles/Trial.dir/build.make CMakeFiles/Trial.dir/build
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/giridhur/Desktop/OpenCVReprojectImageToPointCloud/CMakeFiles  1
-	@echo "Built target OpenCVReprojectImageToPointCloud"
-.PHONY : CMakeFiles/OpenCVReprojectImageToPointCloud.dir/all
+	@echo "Built target Trial"
+.PHONY : CMakeFiles/Trial.dir/all
 
 # Include target in all.
-all: CMakeFiles/OpenCVReprojectImageToPointCloud.dir/all
+all: CMakeFiles/Trial.dir/all
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/OpenCVReprojectImageToPointCloud.dir/rule: cmake_check_build_system
+CMakeFiles/Trial.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/giridhur/Desktop/OpenCVReprojectImageToPointCloud/CMakeFiles 1
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/OpenCVReprojectImageToPointCloud.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/Trial.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/giridhur/Desktop/OpenCVReprojectImageToPointCloud/CMakeFiles 0
-.PHONY : CMakeFiles/OpenCVReprojectImageToPointCloud.dir/rule
+.PHONY : CMakeFiles/Trial.dir/rule
 
 # Convenience name for target.
-OpenCVReprojectImageToPointCloud: CMakeFiles/OpenCVReprojectImageToPointCloud.dir/rule
-.PHONY : OpenCVReprojectImageToPointCloud
+Trial: CMakeFiles/Trial.dir/rule
+.PHONY : Trial
 
 # clean rule for target.
-CMakeFiles/OpenCVReprojectImageToPointCloud.dir/clean:
-	$(MAKE) -f CMakeFiles/OpenCVReprojectImageToPointCloud.dir/build.make CMakeFiles/OpenCVReprojectImageToPointCloud.dir/clean
-.PHONY : CMakeFiles/OpenCVReprojectImageToPointCloud.dir/clean
+CMakeFiles/Trial.dir/clean:
+	$(MAKE) -f CMakeFiles/Trial.dir/build.make CMakeFiles/Trial.dir/clean
+.PHONY : CMakeFiles/Trial.dir/clean
 
 # clean rule for target.
-clean: CMakeFiles/OpenCVReprojectImageToPointCloud.dir/clean
+clean: CMakeFiles/Trial.dir/clean
 .PHONY : clean
 
 #=============================================================================

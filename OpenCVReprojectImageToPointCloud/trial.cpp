@@ -85,6 +85,8 @@ boost::shared_ptr<pcl::visualization::PCLVisualizer> normalsVis (
 
 int main( int argc, char** argv )
 {
+ 
+ 
  //Check arguments
   if (argc != 4)
   {
@@ -122,7 +124,7 @@ int main( int argc, char** argv )
   std::cout << "Read matrix in file " << argv[3] << std::endl;
 
   //Show the values inside Q (for debug purposes)
-  /*
+ 
   for (int y = 0; y < Q.rows; y++)
   {
     const double* Qy = Q.ptr<double>(y);
@@ -131,13 +133,14 @@ int main( int argc, char** argv )
       std::cout << "Q(" << x << "," << y << ") = " << Qy[x] << std::endl;
     }
   }
-  */
+ 
   
   //Load rgb-image
   
+  
   cv::Mat img_rgb = cv::imread(argv[1], CV_LOAD_IMAGE_COLOR);
   
-  if (img_rgb.data == NULL)
+ if (img_rgb.data == NULL)
   {
     std::cerr << "ERROR: Could not read rgb-image: " << argv[1] << std::endl;
     return 1;
@@ -175,7 +178,7 @@ int main( int argc, char** argv )
   //Reproject image to 3D
   std::cout << "Reprojecting image to 3D..." << std::endl;
   cv::reprojectImageTo3D( img_disparity, recons3D, Q, false, CV_32F );
-#endif  
+#endif 
   //Create point cloud and fill it
   std::cout << "Creating Point Cloud..." <<std::endl;
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr point_cloud_ptr (new pcl::PointCloud<pcl::PointXYZRGB>);
@@ -187,17 +190,17 @@ int main( int argc, char** argv )
   {
     uchar* rgb_ptr = img_rgb.ptr<uchar>(i);
 #ifdef CUSTOM_REPROJECT
-    uchar* disp_ptr = img_disparity.ptr<uchar>(i);
+  uchar* disp_ptr = img_disparity.ptr<uchar>(i);
 #else
-    double* recons_ptr = recons3D.ptr<double>(i);
-#endif
+  double* recons_ptr = recons3D.ptr<double>(i);
+ #endif
     for (int j = 0; j < img_rgb.cols; j++)
     {
       //Get 3D coordinat1340974es
-#ifdef CUSTOM_REPROJECT
-      //
-      uchar d = disp_ptr[j];
-      //
+ #ifdef CUSTOM_REPROJECT
+
+     uchar d = disp_ptr[j];
+ 
       if ( d == 0 ) {  aux[ctr_aux]=ctr; ctr_aux++; continue; }//Discard bad pixels
       double pw = -1.0 * static_cast<double>(d) * Q32 + Q33; 
       px = static_cast<double>(j) + Q03;
@@ -242,8 +245,8 @@ int main( int argc, char** argv )
   char as;
   std::cin>>as;
   std::cout<<endl;
-     pcl::PointCloud<pcl::PointXYZRGB> cloud_that_we_need = *point_cloud_ptr;
-     pcl::io::savePCDFileASCII ("test_pcd.pcd",cloud_that_we_need) ;
+  pcl::PointCloud<pcl::PointXYZRGB> cloud_that_we_need = *point_cloud_ptr;
+   // pcl::io::savePCDFileASCII ("test_pcd.pcd",cloud_that_we_need) ;
      pcl::NormalEstimation<pcl::PointXYZRGB, pcl::Normal> ne;
   ne.setInputCloud (point_cloud_ptr);
   pcl::search::KdTree<pcl::PointXYZRGB>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZRGB> ());
@@ -325,16 +328,65 @@ while(b1!=cloud_normals1->end())
  
  
 cv::namedWindow( "Gray image", CV_WINDOW_AUTOSIZE );
+cv::blur( img_nrmls, img_nrmls, cv::Size(3,3) );
+//Contours
+int thresh = 5;
+int max_thresh = 255;
+cv::RNG rng(12345);
+  cv::Mat canny_output;
+  cv::vector<cv::vector<cv::Point> > contours;
+  cv::vector<cv::Vec4i> hierarchy;
+cv::cvtColor(img_nrmls,canny_output,CV_BGR2GRAY);
+  /// Detect edges using canny
+  cv::Canny( canny_output, canny_output, thresh, thresh*2, 3 );
+  /// Find contours
+  cv::findContours( canny_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0) );
+
+  /// Draw contours
+  cv::Mat drawing = cv::Mat::zeros( canny_output.size(), CV_8UC3 );
+ double  max=0;
+ int pos=0,i1;
+  for(  i1 = 0; i1< contours.size(); i1++ )
+     {
+		 if ( cv::contourArea(contours[i1]) >max) { max = cv::contourArea(contours[i1]) ; pos=i1; }
+       
+     }
+      cv::Scalar color = cv::Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
+
+cv::drawContours( drawing, contours, pos, color, 2, 8);
+float avg1=0,avg2=0,avg3=0;
+int j;
+/*
+for(j=0;j<contours[pos].size();j++)
+{ 
+	avg1+= canny.at<cv::Vec3b>(contours[pos][j].y,contours[pos][j].x)[0];
+	avg2+= img_rgb.at<cv::Vec3b>(contours[pos][j].y,contours[pos][j].x)[1];
+	avg3+= img_rgb.at<cv::Vec3b>(contours[pos][j].y,contours[pos][j].x)[2];
+	
+}
+	avg1/=j;
+	avg2/=j;
+	avg3/=j;
+	
+*/
  //bool imwrite(const string& filename, InputArray img, const vector<int>& params=vector<int>() )¶
- cv::imwrite( "img_nrmls.jpg",img_nrmls);
- cv::imshow("Gray image", img_nrmls);
+ cv::imwrite( "img_nrmls_detect.jpg",drawing);
+ cv::imshow("Gray image", drawing);
+ cv::imshow(" image", img_nrmls);
  cvWaitKey(0);
+ 
+cout<<"The direction cosines of the largest plane are"<<avg1<<avg2<<avg3; 
+ 
+ 
+ 
+ 
+ 
 //End of trial code
 // pcl::PointXYZRGB *point = point_cloud_ptr<pcl::PointXYZRGB>.at(0,0);
 // std::cout<<"argo fuck yourself";
   // cloud_normals1 holds our normals 
   //Create visualizer
-  boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
+ // boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
  //viewer = normalsVis(point_cloud_ptr, cloud_normals1);
   // 
   //Main loop

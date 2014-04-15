@@ -102,41 +102,41 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named OpenCVReprojectImageToPointCloud
+# Target rules for targets named Trial
 
 # Build rule for target.
-OpenCVReprojectImageToPointCloud: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 OpenCVReprojectImageToPointCloud
-.PHONY : OpenCVReprojectImageToPointCloud
+Trial: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 Trial
+.PHONY : Trial
 
 # fast build rule for target.
-OpenCVReprojectImageToPointCloud/fast:
-	$(MAKE) -f CMakeFiles/OpenCVReprojectImageToPointCloud.dir/build.make CMakeFiles/OpenCVReprojectImageToPointCloud.dir/build
-.PHONY : OpenCVReprojectImageToPointCloud/fast
+Trial/fast:
+	$(MAKE) -f CMakeFiles/Trial.dir/build.make CMakeFiles/Trial.dir/build
+.PHONY : Trial/fast
 
-opencv_reproject_image_pcl.o: opencv_reproject_image_pcl.cpp.o
-.PHONY : opencv_reproject_image_pcl.o
+trial.o: trial.cpp.o
+.PHONY : trial.o
 
 # target to build an object file
-opencv_reproject_image_pcl.cpp.o:
-	$(MAKE) -f CMakeFiles/OpenCVReprojectImageToPointCloud.dir/build.make CMakeFiles/OpenCVReprojectImageToPointCloud.dir/opencv_reproject_image_pcl.cpp.o
-.PHONY : opencv_reproject_image_pcl.cpp.o
+trial.cpp.o:
+	$(MAKE) -f CMakeFiles/Trial.dir/build.make CMakeFiles/Trial.dir/trial.cpp.o
+.PHONY : trial.cpp.o
 
-opencv_reproject_image_pcl.i: opencv_reproject_image_pcl.cpp.i
-.PHONY : opencv_reproject_image_pcl.i
+trial.i: trial.cpp.i
+.PHONY : trial.i
 
 # target to preprocess a source file
-opencv_reproject_image_pcl.cpp.i:
-	$(MAKE) -f CMakeFiles/OpenCVReprojectImageToPointCloud.dir/build.make CMakeFiles/OpenCVReprojectImageToPointCloud.dir/opencv_reproject_image_pcl.cpp.i
-.PHONY : opencv_reproject_image_pcl.cpp.i
+trial.cpp.i:
+	$(MAKE) -f CMakeFiles/Trial.dir/build.make CMakeFiles/Trial.dir/trial.cpp.i
+.PHONY : trial.cpp.i
 
-opencv_reproject_image_pcl.s: opencv_reproject_image_pcl.cpp.s
-.PHONY : opencv_reproject_image_pcl.s
+trial.s: trial.cpp.s
+.PHONY : trial.s
 
 # target to generate assembly for a file
-opencv_reproject_image_pcl.cpp.s:
-	$(MAKE) -f CMakeFiles/OpenCVReprojectImageToPointCloud.dir/build.make CMakeFiles/OpenCVReprojectImageToPointCloud.dir/opencv_reproject_image_pcl.cpp.s
-.PHONY : opencv_reproject_image_pcl.cpp.s
+trial.cpp.s:
+	$(MAKE) -f CMakeFiles/Trial.dir/build.make CMakeFiles/Trial.dir/trial.cpp.s
+.PHONY : trial.cpp.s
 
 # Help Target
 help:
@@ -144,12 +144,12 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... OpenCVReprojectImageToPointCloud"
+	@echo "... Trial"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... opencv_reproject_image_pcl.o"
-	@echo "... opencv_reproject_image_pcl.i"
-	@echo "... opencv_reproject_image_pcl.s"
+	@echo "... trial.o"
+	@echo "... trial.i"
+	@echo "... trial.s"
 .PHONY : help
 
 
