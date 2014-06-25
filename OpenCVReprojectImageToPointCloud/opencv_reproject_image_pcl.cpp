@@ -11,7 +11,7 @@
         rgb-image (left image of stereo rig) a disparity-image (obtained with 
         some stereo matching algorithm) and the matrix Q (Generated at calibration 
         stage). It displays the 3D reconstruction of the scene using PCL.
-        and calculates planes and orientation in the image
+        and calculates planes and their orientation in the image.
         
         This application is free software; you can redistribute it and/or
         modify it under the terms of the GNU Lesser General Public
@@ -28,6 +28,11 @@
         Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+
+// This code uses two stereo images and their disparity map along with camera parameters. openni.cpp ->  is experimental code written to fetch point cloud data from kinect .
+
+//include all what you want here...
+
 #include <cv.h>
 #include <highgui.h>
 #include <iostream>
@@ -39,6 +44,7 @@
 #include <pcl/point_types.h>
 #include <pcl/features/normal_3d.h>
 
+//code courtesy: Matrin Peris
 //Kids, using this kind of #define is quite dirty, don't do it at home!!
 #define CUSTOM_REPROJECT
 /*** To understand the CUSTOM_REPROJECT code, please read Chapter 12 of the book
@@ -50,7 +56,12 @@
   the previous #define CUSTOM_REPROJECT and recompile.
     
 ***/
+// END CODE COURTESY
 
+
+
+
+//I Had trouble with iterators so i used this
 struct imagedata
 { int x,y; } img_orig_struct[76800];
 long long int aux[10000000]={0};
@@ -61,10 +72,12 @@ int ctr_in_aux(unsigned long long int ctr,unsigned long long int ctr_aux)
 	   if (aux[i]==ctr) return 1;
 	   
 	   return 0;
-   } //function to check ctr validity
+   }  //function to check ctr validity  
+   
+   
    
 //This function creates a PCL visualizer, sets the point cloud to view and returns a pointer
-
+//to the visualizer object
 boost::shared_ptr<pcl::visualization::PCLVisualizer> normalsVis (
     pcl::PointCloud<pcl::PointXYZRGB>::ConstPtr cloud, pcl::PointCloud<pcl::Normal>::ConstPtr normals)
 {
@@ -81,9 +94,11 @@ boost::shared_ptr<pcl::visualization::PCLVisualizer> normalsVis (
   viewer->initCameraParameters ();
   return (viewer);
 }
+//end Visualizer function
 
 
-int main( int argc, char** argv )
+//Main Function
+int main( int argc, char** argv )  
 {
  //Check arguments
   if (argc != 4)
