@@ -120,6 +120,7 @@ int main( int argc, char** argv )
     return 1;
   }
 
+   // Camera parameters are stored in Q
 #ifdef CUSTOM_REPROJECT
   //Get the interesting parameters from Q
   double Q03, Q13, Q23, Q32, Q33;
@@ -191,6 +192,8 @@ int main( int argc, char** argv )
   std::cout << "Reprojecting image to 3D..." << std::endl;
   cv::reprojectImageTo3D( img_disparity, recons3D, Q, false, CV_32F );
 #endif  
+  
+  
   //Create point cloud and fill it
   std::cout << "Creating Point Cloud..." <<std::endl;
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr point_cloud_ptr (new pcl::PointCloud<pcl::PointXYZRGB>);
@@ -240,6 +243,7 @@ int main( int argc, char** argv )
       point.x = px;
       point.y = py;
       point.z = pz;
+      ///fast way to store data
       uint32_t rgb = (static_cast<uint32_t>(pr) << 16 |
               static_cast<uint32_t>(pg) << 8 | static_cast<uint32_t>(pb));
       point.rgb = *reinterpret_cast<float*>(&rgb);
@@ -253,20 +257,28 @@ int main( int argc, char** argv )
   }
   point_cloud_ptr->width = (int) point_cloud_ptr->points.size();
   point_cloud_ptr->height = 1;
+   // just another random comment in between
     std::cout<<"argo fuk yourself"<<std::endl;
-  char as;
-  std::cin>>as;
+    //no offence intended
+    
+  char s;
+  std::cin>>s;
   std::cout<<endl;
+  //exhibiting our coding prowess thru the use of various FORCEFUL CMDS
+  
      pcl::PointCloud<pcl::PointXYZRGB> cloud_that_we_need = *point_cloud_ptr;
      pcl::io::savePCDFileASCII ("test_pcd.pcd",cloud_that_we_need) ;
      pcl::NormalEstimation<pcl::PointXYZRGB, pcl::Normal> ne;
+  	// NORMAL ESITMATION IS A CLASS WHICH CONTAINS MANY USEFUL MEMEBERS
   ne.setInputCloud (point_cloud_ptr);
+  	//THIS CODE USES KD TREE TO FIND NEAREST NEIGHBOURS
   pcl::search::KdTree<pcl::PointXYZRGB>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZRGB> ());
   ne.setSearchMethod (tree);
   pcl::PointCloud<pcl::Normal>::Ptr cloud_normals1 (new pcl::PointCloud<pcl::Normal>);
   ne.setRadiusSearch (0.05);
   ne.compute (*cloud_normals1);
   pcl::PointCloud<pcl::Normal> cloud_that_we_need_2 = *cloud_normals1;
+  // debugging results
   pcl::io::savePCDFileASCII ("test_pcd_normals.pcd",cloud_that_we_need_2) ;
 
 //Start of trial Code
@@ -277,8 +289,10 @@ pcl::PointCloud<pcl::PointXYZRGB>::iterator b2;
 b1 = cloud_normals1->begin();
 b2=point_cloud_ptr->begin();
 uint16_t i;
-
+	//STORING THE POINT CLOUD of NORMALS IN AN IMAGE OF THE SAME SIZE AS INPUT 
 cv::Mat_<cv::Vec3b>::iterator it= img_nrmls.begin<cv::Vec3b>(),it_end=img_nrmls.end<cv::Vec3b>();
+
+		//NOTE : COMMENTED CODE DOESNT WORK
 /*  for (i = 0; i < cloud_normals1->points.size (); i++)
       {
         double n_x = cloud_normals1->points[i].normal_x;
@@ -287,7 +301,7 @@ cv::Mat_<cv::Vec3b>::iterator it= img_nrmls.begin<cv::Vec3b>(),it_end=img_nrmls.
         n_x= (n_x+1)*128;
         Pointer[position].b= (int) n_x= (n_x+1)*128;
        }
-       */
+       */ 
        ctr=0; 
        int x,y;
      /*
@@ -309,10 +323,13 @@ cv::Mat_<cv::Vec3b>::iterator it= img_nrmls.begin<cv::Vec3b>(),it_end=img_nrmls.
 			
 			*/
 //Visualizing normals
+
+	//SINCE DIRO COSINES ARE in (-1,1) we rescale it to (0-255) by doing (1+x)*128 
+	
 while(b1!=cloud_normals1->end())
  {
 	 
-	 if (pcl::isFinite<pcl::Normal>( *b1 ))
+	 if (pcl::isFinite<pcl::Normal>( *b1 )) //TO CHECK IF NORMAL EXISTS AT THAT POINT(IE NOT A BOUNDARY)
                 {
 					
 				
@@ -329,7 +346,7 @@ while(b1!=cloud_normals1->end())
 				
 					 y=img_orig_struct[ctr].x;
 			 		 x=img_orig_struct[ctr].y;   
-			 		 img_nrmls.at<cv::Vec3b>(x,y) = cv::Vec3b( 255,255,255);
+			 		 img_nrmls.at<cv::Vec3b>(x,y) = cv::Vec3b( 255,255,255);  //FILLING UP WITH WHITE
 			         }
       b1++;
       ctr++;
@@ -340,11 +357,12 @@ while(b1!=cloud_normals1->end())
  
  
 cv::namedWindow( "Gray image", CV_WINDOW_AUTOSIZE );
- //bool imwrite(const string& filename, InputArray img, const vector<int>& params=vector<int>() )¶
+ //bool imwrite(const string& filename, InputArray img, const vector<int>& params=vector<int>() )¶ syntax of imwrite
  cv::imwrite( "img_nrmls.jpg",img_nrmls);
  cv::imshow("Gray image", img_nrmls);
  cvWaitKey(0);
 //End of trial code
+
 // pcl::PointXYZRGB *point = point_cloud_ptr<pcl::PointXYZRGB>.at(0,0);
 // std::cout<<"argo fuck yourself";
   // cloud_normals1 holds our normals 
